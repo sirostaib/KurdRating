@@ -8,12 +8,11 @@
 import Foundation
 
 struct Constants {
-    static let API_KEY = "4a06669b886242b8f805e61ea75a43e6"
-    static let BEARER_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0YTA2NjY5Yjg4NjI0MmI4ZjgwNWU2MWVhNzVhNDNlNiIsInN1YiI6IjY1ZjQyYmE1NTk1YTU2MDE4NjA2YTMwYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.FMpyDG5RkGGZFDr1NFMJSWUZreaka_GS21e75B4NTZ8"
+    static let API_KEY = "Your-API-Key"
+    static let BEARER_TOKEN = "Your-API-Key"
     static let BASE_URL = "https://api.themoviedb.org"
     static let YT_BASE_URL = "https://youtube.googleapis.com/youtube/v3/search?"
-    static let YOUTUBE_API_KEY = "AIzaSyA9VrhZy7fK994oU-sN7KiKPbTB6osvmMo"
-    
+    static let YOUTUBE_API_KEY = "Your-API-Key-sN7KiKPbTB6osvmMo"
 }
 
 enum APIError: Error {
