@@ -17,6 +17,10 @@ enum Sections: Int {
 
 class HomeVC: UIViewController {
     
+    private var randomTrendingMovie: Title?
+    
+    private var headerView: HeroHeaderUIView?
+    
     let sectionTitles = [
         "Trending Movies", "Trending TV Series", "Popular", "Upcoming Movies", "Top Rated"
     ]
@@ -36,12 +40,26 @@ class HomeVC: UIViewController {
         homeFeedTable.dataSource = self
         
         
-        let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 500))
+        headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 500))
         homeFeedTable.tableHeaderView = headerView
         
         
-        
         configureNavBar()
+        configureHeroHeaderView()
+    }
+    
+    private func configureHeroHeaderView(){
+        APICaller.shared.getTrendingMovies { [weak self] result in
+            switch result {
+            case .success(let title):
+                let selectedTitle = title.randomElement()
+                self?.randomTrendingMovie = selectedTitle
+                self?.headerView?.configure(with: TitleViewModel(titleName: selectedTitle?.original_title ?? selectedTitle?.original_name ?? "", posterURL: selectedTitle?.poster_path ?? "") )
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            
+        }
     }
     
     private func configureNavBar(){
@@ -106,10 +124,15 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         return 1
     }
     
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath) as? CollectionViewTableViewCell else {
             return UITableViewCell()
         }
+        
+        cell.delegate = self
+        
         
         switch indexPath.section {
         case Sections.TrendingMovies.rawValue:
@@ -168,5 +191,18 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y , width: 100, height: header.bounds.height)
         header.textLabel?.textColor = .label
         header.textLabel?.text = header.textLabel?.text?.capitalizeFirstLetter()
+    }
+}
+
+extension HomeVC: CollectionViewTableViewCellDelegate {
+    func collectionViewTableViewCellDidTapCell(_ cell: CollectionViewTableViewCell, viewModel: TitlePreviewViewModel) {
+        DispatchQueue.main.async{ [weak self] in
+            let vc = TitlePreviewViewController()
+
+            vc.configure(with: viewModel)
+            vc.hidesBottomBarWhenPushed = true
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+        
     }
 }
