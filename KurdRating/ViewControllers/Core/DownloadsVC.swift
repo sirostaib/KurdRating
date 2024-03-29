@@ -1,5 +1,5 @@
 //
-//  SearchVC.swift
+//  DownloadsVC.swift
 //  KurdRating
 //
 //  Created by Siros Taib on 3/27/24.
@@ -7,10 +7,10 @@
 
 import UIKit
 
-class SearchVC: UIViewController {
+class DownloadsVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemRed
+        view.backgroundColor = .systemBackground
     }
 }
